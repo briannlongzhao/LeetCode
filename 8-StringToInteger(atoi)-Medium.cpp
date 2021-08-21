@@ -1,4 +1,4 @@
-/*
+/* 8. String to Integer (atoi)
 Implement the myAtoi(string s) function, which converts a string to a 32-bit signed integer (similar to C/C++'s atoi function).
 The algorithm for myAtoi(string s) is as follows:
 	1. Read in and ignore any leading whitespace.
@@ -19,3 +19,51 @@ Only the space character ' ' is considered a whitespace character.
 Do not ignore any characters other than the leading whitespace or the rest of the string after the digits.
 */
 
+class Solution {
+public:
+    int myAtoi(string s) {
+        bool neg = false;
+        int i = 0;
+        while (s[i] == ' ') {
+            i++;
+        }
+        if (s[i] == '-') {
+            neg = true;
+            i++;
+        }
+        else if (s[i] == '+') {
+            i++;
+        }
+        //string temp = "";
+        int retval = 0;
+        while (s[i] == '0') {
+            i++;
+        }
+        int j = i;
+        while (isdigit(s[j])) {
+            //temp += s[i];
+            if (!neg && (retval > INT_MAX/10)) {
+                return INT_MAX;
+            } 
+            else if (neg && (retval > INT_MAX/10+1)) {
+                return INT_MIN;
+            }
+            retval *= 10;
+            int digit = s[j]-48;
+            if (!neg && digit >= INT_MAX-retval) {
+                return INT_MAX;
+            }
+            else if (neg && retval != 0 && digit >= INT_MAX-retval+1) {
+                return INT_MIN;
+            }
+            retval += digit;
+            j++;
+        }
+        if (neg) {
+            return 0-retval;
+        }
+        else {
+            return retval;
+        }  
+    }
+};
